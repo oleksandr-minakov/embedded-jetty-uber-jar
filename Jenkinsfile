@@ -1,3 +1,3 @@
 #!groovy
 
-echo 'Hello there'
+echo 'Hello from Jenkinsfile!!'
