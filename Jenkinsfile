@@ -6,14 +6,9 @@ def mvn(args) {
 
 node {
     echo 'Hello from Jenkinsfile!!'
-    stage 'Clean'
-    mvn "clean"
-}
-node {
-    echo 'Hello from Jenkinsfile!!'
     stage 'Compile'
     checkout scm
-    mvn "compile"
+    mvn "clean compile"
 }
 input 'Do you want to proceed'
 node {
