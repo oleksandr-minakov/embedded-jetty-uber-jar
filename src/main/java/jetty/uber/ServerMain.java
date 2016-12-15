@@ -11,40 +11,32 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer;
 
-public class ServerMain
-{
-    public static void main(String[] args) throws Throwable
-    {
-
-        try
-        {
+public class ServerMain {
+    public static void main(String[] args) throws Throwable {
+        try {
             new ServerMain().run();
-        }
-        catch (Throwable t)
-        {
+        } catch (Throwable t) {
             t.printStackTrace();
         }
     }
 
-    public void run() throws Exception
-    {
+    public void run() throws Exception {
         Server server = new Server(8080);
 
         URL webRootLocation = this.getClass().getResource("/webroot/index.html");
-        if (webRootLocation == null)
-        {
+        if (webRootLocation == null) {
             throw new IllegalStateException("Unable to determine webroot URL location");
         }
 
-        URI webRootUri = URI.create(webRootLocation.toURI().toASCIIString().replaceFirst("/index.html$","/"));
-        System.err.printf("Web Root URI: %s%n",webRootUri);
+        URI webRootUri = URI.create(webRootLocation.toURI().toASCIIString().replaceFirst("/index.html$", "/"));
+        System.err.printf("Web Root URI: %s%n", webRootUri);
 
         ServletContextHandler context = new ServletContextHandler();
         context.setContextPath("/");
         context.setBaseResource(Resource.newResource(webRootUri));
-        context.setWelcomeFiles(new String[] { "index.html" });
+        context.setWelcomeFiles(new String[]{"index.html"});
 
-        context.getMimeTypes().addMimeMapping("txt","text/plain;charset=utf-8");
+        context.getMimeTypes().addMimeMapping("txt", "text/plain;charset=utf-8");
 
         server.setHandler(context);
 
@@ -53,9 +45,9 @@ public class ServerMain
         wsContainer.addEndpoint(TimeSocket.class);
 
         // Add Servlet endpoints
-        context.addServlet(TimeServlet.class,"/time/");
+        context.addServlet(TimeServlet.class, "/time/");
 
-        context.addServlet(DefaultServlet.class,"/");
+        context.addServlet(DefaultServlet.class, "/");
 
         // Start Server
         server.start();
